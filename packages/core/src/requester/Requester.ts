@@ -188,7 +188,7 @@ class Requester {
       variables,
       headers,
     });
-    const response = await fetch(url, {
+    const response = await this.fetch(url, {
       method: "POST",
       headers,
       body: bodyData,
@@ -211,6 +211,10 @@ class Requester {
       );
     }
     return data;
+  }
+
+  protected async fetch(url: string, options: RequestInit): Promise<Response> {
+    return fetch(url, options);
   }
 
   private getSdkUserAgent(): string {

@@ -5,3 +5,4 @@ export { default as LightsparkClient } from "./client.js";
 export * from "./helpers.js";
 export * from "./objects/index.js";
 export * from "./webhooks.js";
+export { default as NodeKeyLoaderCache } from "./NodeKeyLoaderCache.js";

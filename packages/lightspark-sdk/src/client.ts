@@ -151,13 +151,17 @@ class LightsparkClient {
     private authProvider: AuthProvider = new StubAuthProvider(),
     private readonly serverUrl: string = "api.lightspark.com",
     private readonly cryptoImpl: CryptoInterface = DefaultCrypto,
+    requesterKlass?: typeof Requester,
+    nodeKeyCacheKlass?: typeof NodeKeyCache,
+    nodeKeyLoaderCacheKlass?: typeof NodeKeyLoaderCache,
   ) {
-    this.nodeKeyCache = new NodeKeyCache(this.cryptoImpl);
-    this.nodeKeyLoaderCache = new NodeKeyLoaderCache(
-      this.nodeKeyCache,
-      this.cryptoImpl,
-    );
-    this.requester = new Requester(
+    this.nodeKeyCache = new (
+      nodeKeyCacheKlass ? nodeKeyCacheKlass : NodeKeyCache
+    )(this.cryptoImpl);
+    this.nodeKeyLoaderCache = new (
+      nodeKeyLoaderCacheKlass ? nodeKeyLoaderCacheKlass : NodeKeyLoaderCache
+    )(this.nodeKeyCache, this.cryptoImpl);
+    this.requester = new (requesterKlass ? requesterKlass : Requester)(
       this.nodeKeyCache,
       this.LIGHTSPARK_SDK_ENDPOINT,
       `js-lightspark-sdk/${sdkVersion}`,
